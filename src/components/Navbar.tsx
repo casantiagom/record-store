@@ -41,8 +41,9 @@ const Navbar = () => {
 
             <input
               className="w-96 color"
-              value={keyword}
+              value={keyword[0]}
               onChange={(e) => setKeyword([e.target.value])}
+              placeholder="Search"
             ></input>
           </div>
           <div>
