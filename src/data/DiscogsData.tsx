@@ -6,10 +6,10 @@ const DiscogsContext = createContext({
   setAlbums: (state: []) => {},
   keyword: [] as string[],
   setKeyword: (state: string[]) => {},
-  artistId: [] as any,
-  setArtistId: (state: any) => {},
-  artistImg: [] as string[],
-  setArtistImg: (state: string[]) => {},
+  albumDetail: [] as any[],
+  setAlbumDetail: (state: []) => {},
+  albumId: [] as string[],
+  setAlbumId: (state: string[]) => {},
 });
 
 const discogs = axios.create({
@@ -21,13 +21,13 @@ const discogs = axios.create({
 
 export const DiscogsProvider: FC = ({ children }) => {
   const [albums, setAlbums] = useState<any[]>([]);
-  const [keyword, setKeyword] = useState([""]);
-  const [artistId, setArtistId] = useState([""]);
-  const [artistImg, setArtistImg] = useState([""]);
+  const [keyword, setKeyword] = useState(["radiohead"]);
+  const [albumDetail, setAlbumDetail] = useState<any[]>([]);
+  const [albumId, setAlbumId] = useState([""]);
 
   useEffect(() => {
     discogs
-      .get(`/database/search?artist=radiohead&type=masters`)
+      .get(`/database/search?artist=${keyword[0]}&type=masters`)
 
       .then((res) => {
         setAlbums(res.data.results);
@@ -45,10 +45,10 @@ export const DiscogsProvider: FC = ({ children }) => {
         setAlbums,
         keyword,
         setKeyword,
-        artistId,
-        setArtistId,
-        artistImg,
-        setArtistImg,
+        albumDetail,
+        setAlbumDetail,
+        albumId,
+        setAlbumId,
       }}
     >
       {children}
