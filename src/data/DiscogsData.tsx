@@ -6,13 +6,13 @@ const DiscogsContext = createContext({
   setAlbums: (state: []) => {},
   keyword: [] as string[],
   setKeyword: (state: string[]) => {},
-  albumDetail: [] as any[],
+  albumDetail: [] as any,
   setAlbumDetail: (state: []) => {},
   albumId: [] as string[],
   setAlbumId: (state: string[]) => {},
 });
 
-const discogs = axios.create({
+export const discogs = axios.create({
   baseURL: "https://api.discogs.com",
   headers: {
     Authorization: "Discogs token=BNTbCmOagQriqBkNjkQFSnvZgxLvFyIjlRCDANoK",
@@ -22,7 +22,7 @@ const discogs = axios.create({
 export const DiscogsProvider: FC = ({ children }) => {
   const [albums, setAlbums] = useState<any[]>([]);
   const [keyword, setKeyword] = useState(["radiohead"]);
-  const [albumDetail, setAlbumDetail] = useState<any[]>([]);
+  const [albumDetail, setAlbumDetail] = useState<any>([]);
   const [albumId, setAlbumId] = useState([""]);
 
   useEffect(() => {
