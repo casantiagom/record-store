@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
-import { useContext } from "react";
-import DiscogsContext from "../data/DiscogsData";
 import axios from "axios";
-import { Link, Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const discogs = axios.create({
   baseURL: "https://api.discogs.com",
@@ -12,16 +9,8 @@ const discogs = axios.create({
 });
 
 const Album = (props: any) => {
-  const { albumId, setAlbumId } = useContext(DiscogsContext);
-
   return (
-    <Link
-      onClick={() => {
-        setAlbumId(props.id);
-        console.log(albumId);
-      }}
-      to={`/albums/${props.albumName}`}
-    >
+    <Link to={`/albums/${props.id}`}>
       <article className="overflow-hidden rounded-lg shadow-lg">
         <img
           alt="Placeholder"
@@ -42,8 +31,12 @@ const Album = (props: any) => {
             Year: {props.albumYear}
           </p>
 
-          <span className="hidden">Like</span>
-          <i className="fa fa-heart"></i>
+          <button
+            onClick={() => props.onAdd(props.id)}
+            className=" text-sm bg-peri-200 hover:bg-peri-100 text-white font-bold py-1 px-2 rounded"
+          >
+            Add to Cart
+          </button>
         </footer>
       </article>
     </Link>

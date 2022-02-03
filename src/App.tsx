@@ -3,6 +3,9 @@ import Body from "./components/Body";
 import { DiscogsProvider } from "./data/DiscogsData";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AlbumDetail from "./components/AlbumDetail";
+import NotFound from "./components/NotFound";
+import Cart from "./components/Cart";
+
 function App() {
   return (
     <DiscogsProvider>
@@ -10,6 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Body />} />
         <Route path="albums/:id" element={<AlbumDetail />} />
+        <Route path="notfound/" element={<NotFound />} />
+        <Route path="cart/" element={<Cart />} />
       </Routes>
     </DiscogsProvider>
   );

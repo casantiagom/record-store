@@ -1,6 +1,7 @@
 import { Cart20Filled, Search20Filled } from "@fluentui/react-icons";
 import { useContext } from "react";
 import DiscogsContext from "../data/DiscogsData";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { keyword, setKeyword } = useContext(DiscogsContext);
@@ -9,7 +10,7 @@ const Navbar = () => {
       <nav className="flex items-center justify-between flex-wrap bg-peri-200 p-6">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <span className="font-semibold text-white text-xl tracking-tight">
-            Record Store
+            <Link to={"/"}>Record Store</Link>
           </span>
         </div>
         <div className="block lg:hidden">
@@ -47,13 +48,13 @@ const Navbar = () => {
             ></input>
           </div>
           <div>
-            <a
-              href="/"
+            <Link
+              to="/cart"
               className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-peri-300 hover:bg-white mt-4 lg:mt-0"
             >
               <Cart20Filled />
               Cart
-            </a>
+            </Link>
           </div>
         </div>
       </nav>

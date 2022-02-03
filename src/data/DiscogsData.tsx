@@ -1,16 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, createContext, FC } from "react";
 
-const DiscogsContext = createContext({
-  albums: [] as any[],
-  setAlbums: (state: []) => {},
-  keyword: [] as string[],
-  setKeyword: (state: string[]) => {},
-  albumDetail: [] as any,
-  setAlbumDetail: (state: []) => {},
-  albumId: [] as string[],
-  setAlbumId: (state: string[]) => {},
-});
+const DiscogsContext = createContext<any>({});
 
 export const discogs = axios.create({
   baseURL: "https://api.discogs.com",
@@ -24,6 +15,20 @@ export const DiscogsProvider: FC = ({ children }) => {
   const [keyword, setKeyword] = useState(["radiohead"]);
   const [albumDetail, setAlbumDetail] = useState<any>([]);
   const [albumId, setAlbumId] = useState([""]);
+  const [cartItems, setCartItems] = useState<any>([]);
+
+  const onAdd = (album: any) => {
+    const exist = cartItems.find((x: any) => x.id === album.id);
+    if (exist) {
+      setCartItems(
+        cartItems.map((x: { id: any }) =>
+          x.id === album.id ? { ...exist, qty: exist.qty + 1 } : x
+        )
+      );
+    } else {
+      setCartItems([...cartItems, { ...album, qty: 1 }]);
+    }
+  };
 
   useEffect(() => {
     discogs
@@ -49,6 +54,9 @@ export const DiscogsProvider: FC = ({ children }) => {
         setAlbumDetail,
         albumId,
         setAlbumId,
+        cartItems,
+        setCartItems,
+        onAdd,
       }}
     >
       {children}
