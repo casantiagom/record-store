@@ -1,16 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import DiscogsContext from "../data/DiscogsData";
+import BarLoader from "./BarLoader/BarLoader";
 
 const Cart = () => {
-  const { onAdd, cartItems, setCartItems } = useContext(DiscogsContext);
+  const { onAdd, onRemove, cartItems, setCartItems } =
+    useContext(DiscogsContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (cartItems?.length !== 0) setIsLoading(false);
+    if (cartItems) setIsLoading(false);
   }, [cartItems]);
+  const calculateItems = (total: number, num: any) => {
+    return (total += num.qty);
+  };
+  const calculateTotal = (total: number, num: any) => {
+    return (total += num.lowest_price);
+  };
 
   return isLoading ? (
-    <div>LOADING</div>
+    <BarLoader speed={6} customText={"Loading..."} />
   ) : (
     <div>
       <div className="container mx-auto mt-10">
@@ -37,55 +45,65 @@ const Cart = () => {
               </h3>
             </div>
 
-            {cartItems.map((album: any) => (
-              <div
-                key={album.key}
-                className="flex items-center hover:bg-peri-400 -mx-8 px-6 py-5"
-              >
-                <div className="flex w-2/5">
-                  <div className="w-20">
-                    <img
-                      className="h-24"
-                      src={album.images[0].resource_url}
-                      alt=""
-                    />
-                  </div>
-                  <div className="flex flex-col justify-between ml-4 flex-grow">
-                    <span className="font-bold text-sm">{album.title}</span>
+            {cartItems
+              ?.filter((album: any) => {
+                return (album = !null && album?.id != undefined);
+              })
+              .map((album: any) => (
+                <div
+                  key={album.id}
+                  className="flex items-center hover:bg-peri-400 -mx-8 px-6 py-5"
+                >
+                  <div className="flex w-2/5">
+                    <div className="w-20">
+                      <img
+                        className="h-24"
+                        src={album?.images[0]?.resource_url}
+                        alt=""
+                      />
+                    </div>
+                    <div className="flex flex-col justify-between ml-4 flex-grow">
+                      <span className="font-bold text-sm">{album?.title}</span>
 
-                    <a
-                      href="#"
-                      className="font-semibold hover:text-red-500 text-gray-500 text-xs"
+                      <a
+                        href="#"
+                        className="font-semibold hover:text-red-500 text-gray-500 text-xs"
+                      >
+                        Remove
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex justify-center w-1/5">
+                    <svg
+                      className="fill-current text-gray-600 w-3"
+                      viewBox="0 0 448 512"
+                      onClick={() => onRemove(album)}
                     >
-                      Remove
-                    </a>
+                      <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+                    </svg>
+
+                    <input
+                      className="mx-2 border text-center w-8"
+                      type="text"
+                      placeholder={album?.qty}
+                    />
+
+                    <svg
+                      className="fill-current text-gray-600 w-3"
+                      viewBox="0 0 448 512"
+                      onClick={() => onAdd(album)}
+                    >
+                      <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+                    </svg>
                   </div>
+                  <span className="text-center w-1/5 font-semibold text-sm">
+                    {album.lowest_price}
+                  </span>
+                  <span className="text-center w-1/5 font-semibold text-sm">
+                    {(album.lowest_price * album.qty).toFixed(2)}
+                  </span>
                 </div>
-                <div className="flex justify-center w-1/5">
-                  <svg
-                    className="fill-current text-gray-600 w-3"
-                    viewBox="0 0 448 512"
-                  >
-                    <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                  </svg>
-
-                  <input className="mx-2 border text-center w-8" type="text" />
-
-                  <svg
-                    className="fill-current text-gray-600 w-3"
-                    viewBox="0 0 448 512"
-                  >
-                    <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                  </svg>
-                </div>
-                <span className="text-center w-1/5 font-semibold text-sm">
-                  $400.00
-                </span>
-                <span className="text-center w-1/5 font-semibold text-sm">
-                  $400.00
-                </span>
-              </div>
-            ))}
+              ))}
             <a
               href="#"
               className="flex font-semibold text-indigo-600 text-sm mt-10"
@@ -105,8 +123,10 @@ const Cart = () => {
               Order Summary
             </h1>
             <div className="flex justify-between mt-10 mb-5">
-              <span className="font-semibold text-sm uppercase">Items 3</span>
-              <span className="font-semibold text-sm">590$</span>
+              <span className="font-semibold text-sm uppercase">Items</span>
+              <span className="font-semibold text-sm">
+                {cartItems?.reduce(calculateItems, 0)}
+              </span>
             </div>
             <div>
               <label className="font-medium inline-block mb-3 text-sm uppercase">
@@ -136,9 +156,9 @@ const Cart = () => {
             <div className="border-t mt-8">
               <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                 <span>Total cost</span>
-                <span>$600</span>
+                <span>${cartItems?.reduce(calculateTotal, 0)}</span>
               </div>
-              <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
+              <button className="bg-peri-200 font-semibold hover:text-peri-300 py-3 hover:bg-white hover:border text-sm text-white uppercase w-full">
                 Checkout
               </button>
             </div>

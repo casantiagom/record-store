@@ -7,9 +7,11 @@ import {
   useEffect,
   useState,
 } from "react";
+
 import DiscogsContext from "../data/DiscogsData";
 import { discogs } from "../data/DiscogsData";
 import { useParams } from "react-router-dom";
+import BarLoader from "./BarLoader/BarLoader";
 
 const AlbumDetail = (props: any) => {
   const { id } = useParams();
@@ -39,12 +41,8 @@ const AlbumDetail = (props: any) => {
     fetchData();
   }, []);
 
-  console.log(albumDetail);
-  console.log(albumDetail.id);
-  console.log(cartItems);
-
   return isLoading ? (
-    <div>Loading</div>
+    <BarLoader speed={6} customText={"Loading..."} />
   ) : (
     <div>
       <div className="container my-12 px-4 md:px-12 flex flex-wrap mx-auto ">

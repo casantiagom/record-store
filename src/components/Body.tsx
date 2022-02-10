@@ -1,6 +1,7 @@
 import Album from "./Album";
 import { useContext, useState } from "react";
 import DiscogsContext from "../data/DiscogsData";
+import BarLoader from "./BarLoader/BarLoader";
 
 const Body = () => {
   const { albums, onAdd } = useContext(DiscogsContext);
@@ -12,7 +13,7 @@ const Body = () => {
       <div className="container my-12 mx-auto px-4 md:px-12">
         <div className="flex flex-wrap -mx-1 lg:-mx-4">
           {isLoading ? (
-            <div>Loading</div>
+            <BarLoader speed={6} customText={"Loading..."} />
           ) : (
             albums.map(
               (e: {

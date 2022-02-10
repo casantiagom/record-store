@@ -30,13 +30,6 @@ const Album = (props: any) => {
           <p className="ml-2 text-sm" id="year">
             Year: {props.albumYear}
           </p>
-
-          <button
-            onClick={() => props.onAdd(props.id)}
-            className=" text-sm bg-peri-200 hover:bg-peri-100 text-white font-bold py-1 px-2 rounded"
-          >
-            Add to Cart
-          </button>
         </footer>
       </article>
     </Link>

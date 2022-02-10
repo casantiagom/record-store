@@ -16,12 +16,13 @@ export const DiscogsProvider: FC = ({ children }) => {
   const [albumDetail, setAlbumDetail] = useState<any>([]);
   const [albumId, setAlbumId] = useState([""]);
   const [cartItems, setCartItems] = useState<any>([]);
+  const [localCart, setLocalCart] = useState<any>([]);
 
   const onAdd = (album: any) => {
     const exist = cartItems.find((x: any) => x.id === album.id);
     if (exist) {
       setCartItems(
-        cartItems.map((x: { id: any }) =>
+        cartItems.map((x: { id: number }) =>
           x.id === album.id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
@@ -29,6 +30,29 @@ export const DiscogsProvider: FC = ({ children }) => {
       setCartItems([...cartItems, { ...album, qty: 1 }]);
     }
   };
+
+  const onRemove = (album: any) => {
+    const exist = cartItems.find((x: any) => x.id === album.id);
+    if (exist) {
+      setCartItems(
+        cartItems.map((x: { id: number }) =>
+          x.id === album.id ? { ...exist, qty: exist.qty - 1 } : x
+        )
+      );
+    }
+  };
+
+  useEffect(() => {
+    const cartItemsData = JSON.parse(localStorage.getItem("cartItems") || "");
+
+    if (cartItemsData) {
+      setCartItems(cartItemsData);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   useEffect(() => {
     discogs
@@ -57,6 +81,9 @@ export const DiscogsProvider: FC = ({ children }) => {
         cartItems,
         setCartItems,
         onAdd,
+        localCart,
+        setLocalCart,
+        onRemove,
       }}
     >
       {children}
