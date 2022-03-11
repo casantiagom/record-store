@@ -49,6 +49,12 @@ const Navbar = () => {
           </div>
           <div>
             <Link
+              to="/login"
+              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-peri-300 hover:bg-white mt-4 lg:mt-0 mr-6"
+            >
+              Log In
+            </Link>
+            <Link
               to="/cart"
               className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-peri-300 hover:bg-white mt-4 lg:mt-0"
             >

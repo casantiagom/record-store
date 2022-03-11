@@ -34,6 +34,13 @@ export const DiscogsProvider: FC = ({ children }) => {
   const onRemove = (album: any) => {
     const exist = cartItems.find((x: any) => x.id === album.id);
     if (exist) {
+      setCartItems(cartItems.filter((item: any) => item.id != album.id));
+    }
+  };
+
+  const onMinus = (album: any) => {
+    const exist = cartItems.find((x: any) => x.id === album.id);
+    if (exist && exist.qty != 0) {
       setCartItems(
         cartItems.map((x: { id: number }) =>
           x.id === album.id ? { ...exist, qty: exist.qty - 1 } : x
@@ -83,6 +90,7 @@ export const DiscogsProvider: FC = ({ children }) => {
         onAdd,
         localCart,
         setLocalCart,
+        onMinus,
         onRemove,
       }}
     >

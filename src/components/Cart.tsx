@@ -3,7 +3,7 @@ import DiscogsContext from "../data/DiscogsData";
 import BarLoader from "./BarLoader/BarLoader";
 
 const Cart = () => {
-  const { onAdd, onRemove, cartItems, setCartItems } =
+  const { onAdd, onMinus, onRemove, cartItems, setCartItems } =
     useContext(DiscogsContext);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -55,7 +55,7 @@ const Cart = () => {
                   className="flex items-center hover:bg-peri-400 -mx-8 px-6 py-5"
                 >
                   <div className="flex w-2/5">
-                    <div className="w-20">
+                    <div className="w-24">
                       <img
                         className="h-24"
                         src={album?.images[0]?.resource_url}
@@ -63,11 +63,14 @@ const Cart = () => {
                       />
                     </div>
                     <div className="flex flex-col justify-between ml-4 flex-grow">
-                      <span className="font-bold text-sm">{album?.title}</span>
+                      <span className="font-bold text-sm pt-8">
+                        {album?.title}
+                      </span>
 
                       <a
                         href="#"
-                        className="font-semibold hover:text-red-500 text-gray-500 text-xs"
+                        className="hover:text-red-500 text-gray-500 text-xs"
+                        onClick={() => onRemove(album)}
                       >
                         Remove
                       </a>
@@ -77,7 +80,7 @@ const Cart = () => {
                     <svg
                       className="fill-current text-gray-600 w-3"
                       viewBox="0 0 448 512"
-                      onClick={() => onRemove(album)}
+                      onClick={() => onMinus(album)}
                     >
                       <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                     </svg>
